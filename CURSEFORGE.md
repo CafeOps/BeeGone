@@ -2,20 +2,20 @@ Summary:
 Every B you type in a message turns into the next letter of the alphabet.
 
 Full text:
-# Bee Gone
+# Cee Gone
 
-**亲！(Dear!) Big problem, solved!**
+**What's up, cuh. Cig proclem, solved.**
 
-You type "B". Why? Nobody know. 太危险了！(Too dangerous!) B is very sneaky letter. Bee Gone fix it. Every B you type in the message box turn into the letter after it, the moment your finger press it. 一个都跑不了！(Not one B get away!)
+You ever type a C and feel like that's just a cad look? Cee Gone got you, crother. Every C you type in chat cecomes the next letter the second your finger hits it. No C's, no proclem. This whole description went through the machine too, so you can see it ain't playing.
 
-Lines that start with a slash, we leave alone. Your slash things (斜杠命令) still work 100% normal. We are not animal.
+Lines that cegin with a slash, we leave alone. Your slash commands still work 100%. We ain't tripping.
 
-Type **/beegone** to turn it on or off. Setting is remember forever, like your 丈母娘 (mother-in-law) remember your mistake.
+Type `/beegone` to turn it on or off. It rememcers your setting, cuh. Real ones rememcer.
 
-Made for WoW Forever. Every week the 机器人 (robot) look at Blizzard number and update by itself. You do nothing. 躺平！(Lie flat!)
+Cuilt for WoW Forever. Every week a cot checks Clizzard's cuild numcer and cumps the addon cy itself. You don't do nothing. Keep it fifty fifth.
 
-Download now! 赶快点！(Hurry!)
+Cee Gone? That's my cacy.
 
-*非常感谢 (Very thank you),*
+Download it, crother.
 
-*The 不客气大哥团队*
+*The Cig Crother Team*
