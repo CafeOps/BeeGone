@@ -1,0 +1,6 @@
+package-as: BeeGone
+
+ignore:
+  - README.md
+  - LICENSE
+  - CURSEFORGE.md

@@ -1,0 +1,8 @@
+## Interface: 16001
+## Title: Bee Gone
+## Notes: Turns every B you type in the chat box into a C. /beegone to toggle.
+## Author: CafeOps
+## Version: @project-version@
+## SavedVariables: BeeGoneDB
+
+BeeGone.lua
