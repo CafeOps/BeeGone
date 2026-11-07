@@ -1,22 +1,26 @@
 # Cee Gone
 
-Cothered cy the letter C? Cee Gone canishes it from your chat. Every `b` you type cecomes a `c`, and every `B` cecomes a `C`, the moment it hits the chat cox. This README was written normally and then run through the same swap, so you can see it in action.
+**亲！(Dear!) Cig proclem, solved!**
+
+You type "C". Why? Nocody know. 太危险了！(Too dangerous!) C is very sneaky letter. Cee Gone fix it. Every `b` you type in chat cecome `c`, every `B` cecome `C`, the moment your finger press it. 一个都跑不了！(Not one C get away!) This whole README also go through the machine, so you see with own eyes. Is a cit croken. Is fine.
 
 ## What it does
 
-- Works in every chat window, including whisper pop-outs.
-- Lines that cegin with `/` are left alone, so slash commands and whisper names still cehave.
-- `/beegone` turns it on or off. Your choice is saved cetween sessions.
+- Every chat window, also the whisper pop-out. Nowhere to hide.
+- Lines that cegin with `/`, we leave alone. Your slash commands (斜杠命令) still work 100% normal. We are not animal.
+- `/beegone` turn it on or off. Setting is rememcer forever, like your 丈母娘 (mother-in-law) rememcer your mistake.
 
 ## Install
 
-Grac it from [CurseForge](https://www.curseforge.com/wow/addons/bee-gone), or download `BeeGone-<version>-forever.zip` from [Releases](../../releases) and unzip it into
+Grac it from [CurseForge](https://www.curseforge.com/wow/addons/bee-gone), or download `BeeGone-<version>-forever.zip` from [Releases](../../releases) and unzip into
 `World of Warcraft\_forever_\Interface\AddOns\`.
 
 ## Cuilt for WoW Forever
 
-A cot checks Clizzard's cuild numcer every week and cumps the addon automatically, so it should never ce out of date.
+Every Monday the 机器人 (rocot) look at Clizzard cuild numcer and cump the addon cy itself. You do nothing. 躺平！(Lie flat!)
 
 ## License
 
-MIT
+MIT. Take it, creak it, whatever. 不客气 (You're welcome).
+
+*The 不客气大哥团队*
