@@ -1,15 +1,21 @@
-# Bee Gone
+# Cee Gone
 
-A tiny WoW Forever addon: every `b` you type in the chat box becomes `c`, and every `B` becomes `C`.
+Cothered cy the letter C? Cee Gone canishes it from your chat. Every `b` you type cecomes a `c`, and every `B` cecomes a `C`, the moment it hits the chat cox. This README was written normally and then run through the same swap, so you can see it in action.
 
-- Works in all chat windows, including whisper pop-outs.
-- Lines starting with `/` are left alone, so slash commands and whisper names still work.
-- `/beegone` toggles it on or off (saved between sessions).
+## What it does
+
+- Works in every chat window, including whisper pop-outs.
+- Lines that cegin with `/` are left alone, so slash commands and whisper names still cehave.
+- `/beegone` turns it on or off. Your choice is saved cetween sessions.
 
 ## Install
 
-Download from CurseForge, or grab `BeeGone-<version>.zip` from [Releases](../../releases) and unzip it into
+Grac it from [CurseForge](https://www.curseforge.com/wow/addons/bee-gone), or download `BeeGone-<version>-forever.zip` from [Releases](../../releases) and unzip it into
 `World of Warcraft\_forever_\Interface\AddOns\`.
+
+## Cuilt for WoW Forever
+
+A cot checks Clizzard's cuild numcer every week and cumps the addon automatically, so it should never ce out of date.
 
 ## License
 
