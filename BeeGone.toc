@@ -4,5 +4,6 @@
 ## Author: CafeOps
 ## Version: @project-version@
 ## SavedVariables: BeeGoneDB
+## X-Curse-Project-ID: 1789352
 
 BeeGone.lua
