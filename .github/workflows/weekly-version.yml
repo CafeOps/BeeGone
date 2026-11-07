@@ -1,0 +1,95 @@
+name: Weekly game version check
+
+# Every Monday: ask Blizzard's public version server what build WoW Forever
+# is on. If its interface number is newer than BeeGone.toc, bump the .toc,
+# tag a new patch version and upload it to CurseForge. If anything outside
+# our control is down or looks wrong, skip quietly (warning, not failure).
+
+on:
+  schedule:
+    - cron: "17 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: version-bump
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      # GitHub pauses scheduled workflows after 60 days without repo activity.
+      # Re-enabling through the API each run keeps this one alive.
+      - name: Keep schedule alive
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/weekly-version.yml/enable"
+
+      - name: Check current Forever build
+        id: check
+        shell: bash
+        run: |
+          skip() { echo "::warning::$1 - skipping this week"; echo "bump=false" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          table=$(curl -fsS --retry 3 --retry-delay 10 --max-time 30 \
+            https://us.version.battle.net/v2/products/wowf/versions) || skip "Blizzard version server unreachable"
+
+          col=$(printf '%s\n' "$table" | head -1 | tr '|' '\n' | grep -n '^VersionsName' | cut -d: -f1)
+          [ -n "$col" ] || skip "Version table format changed"
+          ver=$(printf '%s\n' "$table" | awk -F'|' -v c="$col" '$1=="us"{print $c; exit}')
+
+          [[ "$ver" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)\.[0-9]+$ ]] || skip "Unexpected version '$ver'"
+          new=$(( BASH_REMATCH[1] * 10000 + BASH_REMATCH[2] * 100 + BASH_REMATCH[3] ))
+
+          cur=$(grep -m1 '^## Interface:' BeeGone.toc | tr -cd '0-9')
+          cur=${cur:-0}
+
+          echo "Forever build $ver -> interface $new (toc has $cur)"
+          if (( new > cur )); then
+            echo "bump=true" >> "$GITHUB_OUTPUT"
+            echo "new=$new" >> "$GITHUB_OUTPUT"
+            echo "ver=$ver" >> "$GITHUB_OUTPUT"
+          else
+            echo "Up to date."
+            echo "bump=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump .toc and tag
+        if: steps.check.outputs.bump == 'true'
+        shell: bash
+        env:
+          NEW: ${{ steps.check.outputs.new }}
+          VER: ${{ steps.check.outputs.ver }}
+        run: |
+          set -euo pipefail
+          sed -i "s/^## Interface:.*/## Interface: $NEW/" BeeGone.toc
+
+          git config user.name "CafeOps"
+          git config user.email "232302236+CafeOps@users.noreply.github.com"
+          git commit -am "Bump interface to $NEW for Forever $VER"
+
+          last=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || echo v1.0.0)
+          IFS=. read -r major minor patch <<< "${last#v}"
+          next="v${major}.${minor}.$(( ${patch:-0} + 1 ))"
+          git tag "$next"
+          git push origin HEAD:main "$next"
+          echo "Released $next" >> "$GITHUB_STEP_SUMMARY"
+
+      # Tags pushed with GITHUB_TOKEN don't start other workflows,
+      # so package and upload here instead of in release.yml.
+      - name: Package and upload
+        if: steps.check.outputs.bump == 'true'
+        uses: BigWigsMods/packager@v2
