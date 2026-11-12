@@ -6,4 +6,5 @@
 ## SavedVariables: BeeGoneDB
 ## X-Curse-Project-ID: 1789352
 
+Swap.lua
 BeeGone.lua

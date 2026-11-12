@@ -1,7 +1,8 @@
 -- Bee Gone: every B typed into the chat box becomes a C (b -> c, B -> C).
 -- Lines that start with "/" are left alone so slash commands and
--- whisper names still work.
+-- whisper names still work. Links, colors and icons are left alone (see Swap.lua).
 
+local _, ns = ...
 local hooked = {}
 
 local function OnTextChanged(editBox, userInput)
@@ -12,8 +13,11 @@ local function OnTextChanged(editBox, userInput)
 	if text:sub(1, 1) == "/" or not text:find("[Bb]") then
 		return
 	end
+	local newText = ns.Swap(text)
+	if newText == text then
+		return -- only B's inside links: nothing to change
+	end
 	local cursor = editBox:GetCursorPosition()
-	local newText = text:gsub("B", "C"):gsub("b", "c")
 	editBox:SetText(newText)
 	editBox:SetCursorPosition(cursor) -- same length, so the cursor stays put
 end
