@@ -5,10 +5,7 @@
 local _, ns = ...
 local hooked = {}
 
-local function OnTextChanged(editBox, userInput)
-	if not userInput or not BeeGoneDB.enabled then
-		return
-	end
+local function SwapEditBox(editBox)
 	local text = editBox:GetText()
 	if text:sub(1, 1) == "/" or not text:find("[Bb]") then
 		return
@@ -22,6 +19,23 @@ local function OnTextChanged(editBox, userInput)
 	editBox:SetCursorPosition(cursor) -- same length, so the cursor stays put
 end
 
+-- As you type: the B turns into a C on screen.
+local function OnTextChanged(editBox, userInput)
+	if userInput and BeeGoneDB.enabled then
+		SwapEditBox(editBox)
+	end
+end
+
+-- Right before sending: Blizzard fires this for addons after it reads the
+-- channel prefix and before it takes the text, so any B the typing hook
+-- missed (a keystroke WoW didn't count as typed, a paste, a recalled line)
+-- still goes out as a C.
+local function OnPreSendText(_, editBox)
+	if BeeGoneDB.enabled and editBox then
+		SwapEditBox(editBox)
+	end
+end
+
 local function Hook(editBox)
 	if editBox and not hooked[editBox] then
 		editBox:HookScript("OnTextChanged", OnTextChanged)
@@ -32,6 +46,11 @@ end
 local function HookAll()
 	for i = 1, (NUM_CHAT_WINDOWS or 10) do
 		Hook(_G["ChatFrame" .. i .. "EditBox"])
+	end
+	-- Whisper pop-out windows are ChatFrame11 and up, past NUM_CHAT_WINDOWS.
+	-- CHAT_FRAMES lists every chat frame, those included.
+	for _, name in ipairs(CHAT_FRAMES or {}) do
+		Hook(_G[name .. "EditBox"])
 	end
 end
 
@@ -46,6 +65,9 @@ f:SetScript("OnEvent", function()
 	-- Whisper pop-out windows create new edit boxes later.
 	if FCF_OpenTemporaryWindow then
 		hooksecurefunc("FCF_OpenTemporaryWindow", HookAll)
+	end
+	if EventRegistry then
+		EventRegistry:RegisterCallback("ChatFrame.OnEditBoxPreSendText", OnPreSendText, ns)
 	end
 end)
 
