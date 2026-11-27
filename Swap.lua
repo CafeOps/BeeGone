@@ -14,6 +14,7 @@ local PROTECT = {
 	"^|T.-|t", -- texture icon
 	"^|A.-|a", -- atlas icon
 	"^|K.-|k", -- protected Battle.net name
+	"^|[HTAK].*", -- a link, icon or name with no end yet (cut off or still being added): leave the rest
 }
 
 local function SwapPlain(s)
