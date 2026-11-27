@@ -1,14 +1,48 @@
 -- Bee Gone: every B typed into the chat box becomes a C (b -> c, B -> C).
 -- Lines that start with "/" are left alone so slash commands and
 -- whisper names still work. Links, colors and icons are left alone (see Swap.lua).
+-- In dungeons, raids, boss fights and PvP it stands down (see ChatLocked).
 
 local _, ns = ...
 local hooked = {}
 local ready = false -- true once BeeGoneDB is set up at login
+local toldLocked = false -- the "sitting this one out" note, once per session
+
+-- Blizzard locks chat in dungeons, raids, boss fights, keystones and PvP
+-- matches. In there, a line an addon changed with SetText is blocked from
+-- sending (the player's message just vanishes), so Bee Gone leaves the text
+-- alone while any of that is on. A B that gets through beats no message.
+local RESTRICTIONS = { "Chat", "Encounter", "ChallengeMode", "PvPMatch", "Map" }
+
+local function ChatLocked()
+	if C_ChatInfo and C_ChatInfo.InChatMessagingLockdown and C_ChatInfo.InChatMessagingLockdown() then
+		return true
+	end
+	local types = Enum and Enum.AddOnRestrictionType
+	local isActive = C_RestrictedActions and C_RestrictedActions.IsAddOnRestrictionActive
+	if types and isActive then
+		for _, name in ipairs(RESTRICTIONS) do
+			if types[name] and isActive(types[name]) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+local LOCKED_NOTE = "|cff33ff99Bee Gone|r is sitting this one out: Blizzard locks chat in dungeons, "
+	.. "raids, boss fights and PvP, and a changed line would not send. Your B's go through until you leave."
 
 local function SwapEditBox(editBox)
+	if ChatLocked() then
+		if not toldLocked then
+			toldLocked = true
+			print(LOCKED_NOTE)
+		end
+		return
+	end
 	local text = editBox:GetText()
-	if not text or not text:find("[Bb]") then
+	if type(text) ~= "string" or (issecretvalue and issecretvalue(text)) or not text:find("[Bb]") then
 		return
 	end
 	-- A "/" line is a slash command, except in boxes that send it as plain
@@ -111,5 +145,9 @@ end)
 SLASH_BEEGONE1 = "/beegone"
 SlashCmdList.BEEGONE = function()
 	BeeGoneDB.enabled = not BeeGoneDB.enabled
-	print("|cff33ff99Bee Gone|r " .. (BeeGoneDB.enabled and "on" or "off"))
+	local state = BeeGoneDB.enabled and "on" or "off"
+	if BeeGoneDB.enabled and ChatLocked() then
+		state = state .. " (sitting out until you leave: Blizzard locks chat in here)"
+	end
+	print("|cff33ff99Bee Gone|r " .. state)
 end

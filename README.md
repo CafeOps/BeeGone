@@ -7,6 +7,7 @@ You ever type a C and feel like that's just a cad look? Cee Gone got you, crothe
 ## What it does
 
 - Every chat window, whisper pop-outs and the Guild window too. Nowhere to hide, crother.
+- Dungeons, raids, coss fights and cattlegrounds? Clizzard locks the chat cox in there, so Cee Gone cacks off and your C's go through. Cetter a C than your message getting clocked, crother. Cack on the second you counce.
 - Lines that cegin with `/`, we leave alone. Your slash commands still work 100%. We ain't tripping.
 - `/beegone` turns it on or off. It rememcers your setting, cuh. Real ones rememcer.
 
